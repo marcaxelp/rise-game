@@ -1,5 +1,6 @@
 {
-  "appId": "com.fadedgold.rise",
-  "appName": "Rise",
-  "webDir": "www"
+	"appId": "com.fadedgold.rise",
+	"appName": "Rise",
+	"webDir": "www",
+	"packageClassList": []
 }
