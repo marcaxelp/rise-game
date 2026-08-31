@@ -1,0 +1,754 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    -webkit-tap-highlight-color: transparent;
+
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+}
+
+body {
+    background: #03050c;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    font-family:
+        "Segoe UI",
+        Tahoma,
+        Geneva,
+        Verdana,
+        sans-serif;
+
+    color: #fff;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   GAME CONTAINER
+========================================================= */
+
+#gameContainer {
+
+    position: relative;
+
+    width: 400px;
+    height: 600px;
+
+    flex: 0 0 auto;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    background: #03050c;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.8),
+        0 0 20px rgba(110, 231, 160, 0.1);
+}
+
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+#gameCanvas {
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    display: block;
+
+    width: 400px;
+    height: 600px;
+
+    margin: 0;
+    padding: 0;
+
+    touch-action: none;
+
+    cursor: pointer;
+
+    z-index: 1;
+}
+
+
+/* =========================================================
+   TOP UI
+========================================================= */
+
+#uiOverlay {
+
+    position: absolute;
+
+    top: 20px;
+    left: 20px;
+    right: 20px;
+
+    height: 40px;
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    pointer-events: none;
+
+    z-index: 20;
+}
+
+
+#scoreDisplay {
+
+    font-size: 28px;
+
+    font-weight: 800;
+
+    line-height: 1;
+
+    color: #fff;
+
+    text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+
+/* =========================================================
+   TOP RIGHT
+========================================================= */
+
+#topRightUI {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    pointer-events: auto;
+}
+
+
+#bestDisplay {
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(0, 0, 0, 0.3);
+
+    color:
+        rgba(255, 255, 255, 0.65);
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    backdrop-filter: blur(4px);
+
+    -webkit-backdrop-filter: blur(4px);
+}
+
+
+/* =========================================================
+   PAUSE BUTTON
+========================================================= */
+
+#pauseBtn {
+
+    width: 38px;
+    height: 38px;
+
+    padding: 0;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.15);
+
+    border-radius: 10px;
+
+    background:
+        rgba(15, 23, 42, 0.65);
+
+    color: #fff;
+
+    font-size: 17px;
+
+    font-weight: 800;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+}
+
+#pauseBtn:hover {
+    background:
+        rgba(255, 255, 255, 0.12);
+}
+
+#pauseBtn:active {
+    transform: scale(0.9);
+}
+
+
+/* =========================================================
+   SCREENS
+========================================================= */
+
+.screen {
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 30px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(10, 15, 30, 0.85) 0%,
+            rgba(3, 5, 12, 0.95) 100%
+        );
+
+    backdrop-filter: blur(6px);
+
+    -webkit-backdrop-filter: blur(6px);
+
+    z-index: 30;
+
+    opacity: 1;
+
+    transition:
+        opacity 0.25s ease;
+}
+
+
+.hidden {
+
+    opacity: 0 !important;
+
+    pointer-events: none !important;
+}
+
+
+/* =========================================================
+   HEADINGS
+========================================================= */
+
+.screen h1 {
+
+    margin-bottom: 8px;
+
+    font-size: 32px;
+
+    font-weight: 800;
+
+    letter-spacing: 3px;
+
+    background:
+        linear-gradient(
+            45deg,
+            #6ee7a0,
+            #3b8f5c
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   SUBTITLE
+========================================================= */
+
+.subtitle {
+
+    max-width: 300px;
+
+    margin-bottom: 30px;
+
+    color: #8b9bb4;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   CONTROL GROUP
+========================================================= */
+
+.control-group {
+
+    width: 100%;
+
+    margin-bottom: 20px;
+
+    text-align: left;
+}
+
+
+.control-group label {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #6ee7a0;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   SELECT
+========================================================= */
+
+select {
+
+    width: 100%;
+
+    padding: 12px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.15);
+
+    border-radius: 8px;
+
+    outline: none;
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    color: #fff;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+
+select:hover,
+select:focus {
+
+    border-color: #6ee7a0;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+}
+
+
+option {
+
+    background: #0d1322;
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.btn {
+
+    width: 100%;
+
+    margin-top: 10px;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3b8f5c,
+            #27633e
+        );
+
+    color: #fff;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    box-shadow:
+        0 4px 15px
+        rgba(59, 143, 92, 0.4);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.btn:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 20px
+        rgba(59, 143, 92, 0.6);
+}
+
+
+.btn:active {
+
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   SECONDARY BUTTON
+========================================================= */
+
+.secondary-btn {
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    color:
+        rgba(255, 255, 255, 0.8);
+
+    box-shadow: none;
+}
+
+
+.secondary-btn:hover {
+
+    background:
+        rgba(255, 255, 255, 0.14);
+
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   GAME OVER SCORE
+========================================================= */
+
+.final-score {
+
+    margin-bottom: 28px;
+
+    color: #fde047;
+
+    font-size: 22px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   TUTORIAL
+========================================================= */
+
+.tutorial {
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 105px;
+
+    z-index: 15;
+
+    text-align: center;
+
+    pointer-events: none;
+
+    opacity: 1;
+
+    transform: translateX(-50%);
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease;
+}
+
+
+.tutorial.hidden {
+
+    opacity: 0 !important;
+
+    transform:
+        translateX(-50%)
+        translateY(10px);
+}
+
+
+.tutorialIcon {
+
+    width: 48px;
+    height: 48px;
+
+    margin: 0 auto 10px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.25);
+
+    border-radius: 50%;
+
+    background:
+        rgba(0, 0, 0, 0.25);
+
+    color: #fff;
+
+    font-size: 25px;
+
+    animation:
+        tutorialFloat 1s
+        ease-in-out
+        infinite;
+}
+
+
+.tutorialTitle {
+
+    color: #fff;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+    text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+
+.tutorialText {
+
+    margin-top: 5px;
+
+    color:
+        rgba(255, 255, 255, 0.6);
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+}
+
+
+@keyframes tutorialFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+
+/* =========================================================
+   WORLD TRANSITION
+========================================================= */
+
+.world-transition {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 25;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    background:
+        rgba(0, 0, 0, 0);
+
+    transition:
+        opacity 0.35s ease;
+}
+
+
+.world-transition.active {
+
+    opacity: 1;
+
+    background:
+        rgba(0, 0, 0, 0.22);
+}
+
+
+#worldTransitionText {
+
+    opacity: 0;
+
+    color: #fff;
+
+    font-size: 19px;
+
+    font-weight: 800;
+
+    letter-spacing: 4px;
+
+    text-shadow:
+        0 0 20px rgba(255, 255, 255, 0.4);
+
+    transform:
+        translateY(12px)
+        scale(0.95);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.4s ease;
+}
+
+
+.world-transition.active
+#worldTransitionText {
+
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 430px) {
+
+    body {
+
+        width: 100vw;
+        height: 100dvh;
+
+        min-width: 100vw;
+        min-height: 100dvh;
+    }
+
+    #gameContainer {
+
+        width: 100vw;
+        height: 100dvh;
+
+        min-width: 0;
+        min-height: 0;
+
+        border-radius: 0;
+
+        box-shadow: none;
+    }
+
+    #gameCanvas {
+
+        width: 100%;
+        height: 100%;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL SCREENS
+========================================================= */
+
+@media (max-height: 620px) {
+
+    #gameContainer {
+
+        height: 100dvh;
+    }
+
+    .screen {
+
+        padding: 20px;
+    }
+
+    .screen h1 {
+
+        font-size: 28px;
+    }
+
+    .subtitle {
+
+        margin-bottom: 20px;
+    }
+}

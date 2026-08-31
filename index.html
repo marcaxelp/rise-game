@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    >
+
+    <title>Rise & Fall</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main id="gameContainer">
+
+        <!-- GAME CANVAS -->
+        <canvas
+            id="gameCanvas"
+            width="400"
+            height="600"
+        ></canvas>
+
+
+        <!-- TOP UI -->
+        <div id="uiOverlay">
+
+            <div id="scoreDisplay">0</div>
+
+            <div id="topRightUI">
+
+                <div id="bestDisplay">
+                    BEST: 0
+                </div>
+
+                <button
+                    id="pauseBtn"
+                    type="button"
+                    aria-label="Pause Game"
+                >
+                    Ⅱ
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- TUTORIAL -->
+        <div
+            id="tutorialOverlay"
+            class="tutorial hidden"
+        >
+
+            <div class="tutorialIcon">
+                ↑
+            </div>
+
+            <div class="tutorialTitle">
+                TAP &amp; HOLD TO RISE
+            </div>
+
+            <div class="tutorialText">
+                RELEASE TO FALL
+            </div>
+
+        </div>
+
+
+        <!-- WORLD TRANSITION -->
+        <div
+            id="worldTransition"
+            class="world-transition"
+        >
+
+            <div id="worldTransitionText">
+                GRASSLAND
+            </div>
+
+        </div>
+
+
+        <!-- START SCREEN -->
+        <div
+            id="startScreen"
+            class="screen"
+        >
+
+            <h1>RISE &amp; FALL</h1>
+
+            <p class="subtitle">
+                Hold to rise, release to fall,
+                avoid the obstacles and survive.
+            </p>
+
+            <div class="control-group">
+
+                <label for="worldThemeSelect">
+                    Atmosphere / Theme
+                </label>
+
+                <select id="worldThemeSelect">
+
+                    <option value="auto">
+                        Automatic
+                    </option>
+
+                    <option value="grass">
+                        Grassland
+                    </option>
+
+                    <option value="night">
+                        Night
+                    </option>
+
+                    <option value="storm">
+                        Storm
+                    </option>
+
+                    <option value="lava">
+                        Lava
+                    </option>
+
+                    <option value="space">
+                        Space
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button
+                id="startBtn"
+                class="btn"
+                type="button"
+            >
+                START GAME
+            </button>
+
+        </div>
+
+
+        <!-- PAUSE SCREEN -->
+        <div
+            id="pauseScreen"
+            class="screen hidden"
+        >
+
+            <h1>PAUSED</h1>
+
+            <p class="subtitle">
+                Your run is waiting.
+            </p>
+
+            <button
+                id="resumeBtn"
+                class="btn"
+                type="button"
+            >
+                RESUME
+            </button>
+
+            <button
+                id="pauseRestartBtn"
+                class="btn secondary-btn"
+                type="button"
+            >
+                RESTART
+            </button>
+
+        </div>
+
+
+        <!-- GAME OVER SCREEN -->
+        <div
+            id="gameOverScreen"
+            class="screen hidden"
+        >
+
+            <h1>RUN OVER</h1>
+
+            <p
+                id="finalScoreText"
+                class="subtitle final-score"
+            >
+                Score: 0
+            </p>
+
+            <div class="control-group">
+
+                <label for="gameOverThemeSelect">
+                    Change Theme
+                </label>
+
+                <select id="gameOverThemeSelect">
+
+                    <option value="auto">
+                        Automatic
+                    </option>
+
+                    <option value="grass">
+                        Grassland
+                    </option>
+
+                    <option value="night">
+                        Night
+                    </option>
+
+                    <option value="storm">
+                        Storm
+                    </option>
+
+                    <option value="lava">
+                        Lava
+                    </option>
+
+                    <option value="space">
+                        Space
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button
+                id="retryBtn"
+                class="btn"
+                type="button"
+            >
+                TRY AGAIN
+            </button>
+
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
