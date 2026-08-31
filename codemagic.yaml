@@ -6,12 +6,29 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Install dependencies
+      - name: Otomatik Zip Bul ve Kurulumu Yap
         script: |
-          cd ios/App
+          echo "Zip dosyası aranıyor..."
+          ZIP_DOSYASI=$(find . -name "ios.zip" | head -n 1)
+          
+          if [ -n "$ZIP_DOSYASI" ]; then
+            echo "Zip bulundu: $ZIP_DOSYASI, dışarı çıkarılıyor..."
+            unzip -q -o "$ZIP_DOSYASI" -d ios_temp
+            # Çıkan dosyaları doğru konuma taşıyoruz
+            mkdir -p ios/App
+            cp -r ios_temp/App/* ios/App/ 2>/dev/null || cp -r ios_temp/* ios/App/ 2>/dev/null
+          fi
+          
+          # Podfile'ı bulup bağımlılıkları kuruyoruz
+          PODFILE_DIR=$(find . -name "Podfile" -exec dirname {} \; | head -n 1)
+          echo "Podfile dizini: $PODFILE_DIR"
+          cd "$PODFILE_DIR"
           pod install
       - name: Build ipa
         script: |
-          cd ios/App
-          xcodebuild -workspace App.xcworkspace -scheme App -sdk iphoneos -configuration Release archive -archivePath build/App.xcarchive
+          PODFILE_DIR=$(find . -name "Podfile" -exec dirname {} \; | head -n 1)
+          cd "$PODFILE_DIR"
+          WORKSPACE=$(find . -name "*.xcworkspace" | head -n 1)
+          SCHEME=$(basename "$WORKSPACE" .xcworkspace)
+          xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk iphoneos -configuration Release archive -archivePath build/App.xcarchive
           xcodebuild -exportArchive -archivePath build/App.xcarchive -exportOptionsPlist exportOptions.plist -exportPath build/
