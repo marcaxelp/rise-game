@@ -1,36 +1,21 @@
 workflows:
-  ios-release:
-    name: iOS Build Workflow
-    instance_type: mac_mini_m2
+  ios-workflow:
+    name: iOS Build
     max_build_duration: 60
+    environment:
+      xcode: latest
+      cocoapods: default
     scripts:
-      - name: Prepare Web Directory and Dependencies
+      - name: Extract iOS project
         script: |
-          mkdir -p www
-          npm install
-          npm install @capacitor/core @capacitor/cli @capacitor/ios
-      - name: Generate iOS Platform
-        script: |
-          npx cap add ios || true
-          npx cap sync ios
-      - name: Build iOS App Project
+          if [ -f ios/App/ios.zip ]; then
+            unzip ios/App/ios.zip -d ios/
+          fi
+      - name: Install dependencies
         script: |
           cd ios/App
-          xcodebuild -project App.xcodeproj \
-                     -scheme App \
-                     -sdk iphoneos \
-                     -configuration Release \
-                     -derivedDataPath build \
-                     CODE_SIGNING_ALLOWED=NO \
-                     CODE_SIGN_IDENTITY="" \
-                     CODE_SIGNING_REQUIRED=NO \
-                     clean build
-          
-          # Indirilebilir IPA yapısı oluşturma
-          mkdir -p Payload
-          cp -r build/Build/Products/Release-iphoneos/App.app Payload/
-          zip -r App.ipa Payload
-          mv App.ipa ../../App.ipa
-    artifacts:
-      - "*.ipa"
-      - ios/App/build/Build/Products/Release-iphoneos/*.app
+          pod install
+      - name: Build ipa
+        script: |
+          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -sdk iphoneos -configuration Release archive -archivePath build/App.xcarchive
+          xcodebuild -exportArchive -archivePath build/App.xcarchive -exportOptionsPlist exportOptions.plist -exportPath build/
