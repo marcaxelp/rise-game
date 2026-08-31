@@ -6,16 +6,24 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Extract iOS project
+      - name: Find and extract Podfile
         script: |
-          if [ -f ios/App/ios.zip ]; then
-            unzip ios/App/ios.zip -d ios/
-          fi
+          find . -name "ios.zip" -exec unzip -o {} -d ios_extracted \;
+          # Eğer ios/App klasörü başka bir alt klasör içindeyse köke taşıyalım
+          find ios_extracted -name "Podfile" -path "*/App/*" -exec dirname {} \;
       - name: Install dependencies
         script: |
-          cd ios/App
+          # Podfile'ın nerede olduğunu bulup pod install çalıştıralım
+          PODFILE_PATH=$(find . -name "Podfile" | head -n 1)
+          APP_DIR=$(dirname "$PODFILE_PATH")
+          echo "Podfile bulundu: $PODFILE_PATH"
+          cd "$APP_DIR"
           pod install
       - name: Build ipa
         script: |
-          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -sdk iphoneos -configuration Release archive -archivePath build/App.xcarchive
+          PODFILE_PATH=$(find . -name "Podfile" | head -n 1)
+          APP_DIR=$(dirname "$PODFILE_PATH")
+          WORKSPACE=$(find . -name "*.xcworkspace" | head -n 1)
+          SCHEME=$(basename "$WORKSPACE" .xcworkspace)
+          xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk iphoneos -configuration Release archive -archivePath build/App.xcarchive
           xcodebuild -exportArchive -archivePath build/App.xcarchive -exportOptionsPlist exportOptions.plist -exportPath build/
